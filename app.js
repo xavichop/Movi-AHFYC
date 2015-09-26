@@ -10,6 +10,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/angular', express.static(__dirname + '/node_modules/angular/'));
 app.use('/angular-socket', express.static(__dirname + '/node_modules/angular-socket-io/'));
 app.use('/css', express.static(__dirname + '/node_modules/angular-socket-io/'));
+app.use('/css', express.static(__dirname + '/css'));
 
 app.use('/', routes);
 
