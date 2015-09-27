@@ -4,7 +4,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   //res.render('login/userlist.jade',{ title : 'X Chat' });
-  res.render('managing_nicknames/userlist.jade',{ title : 'X Chat' });
+  res.render('managing_nicknames/index.jade',{ title : 'X Chat' });
 });
 router.get('/loginR', function(req, res, next) {
   res.render('login/login.jade',{ title : 'X Chat' });
