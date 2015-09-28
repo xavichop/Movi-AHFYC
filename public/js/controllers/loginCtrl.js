@@ -8,9 +8,9 @@ var app = angular.module('MoviApp', ['ngResource']);
 app.controller('loginController', ["$scope", "$timeout", "$resource", "$window", function ($scope, $timeout, $resource, $window) {
     //Load Style sheets
 
-    head.load(AppConfigSettings.Assets.cssIndex, function () {
-        //Pages Loaded
-    });
+    //head.load(AppConfigSettings.Assets.cssIndex, function () {
+    //    //Pages Loaded
+    //});
 
     //$scope.username = 'xavier';
 
