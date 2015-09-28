@@ -8,7 +8,7 @@ var FrontEnds={
 var AppConfigSettings = {
     Assets:{
         cssIndex:[
-            "/css/bootstrap."+FrontEnds[FrontEnds.Enabled]+".css",
+            "../css/bootstrap."+FrontEnds[FrontEnds.Enabled]+".css",
             //"/css/main."+FrontEnds[FrontEnds.Enabled]+".css"
         ]
     }
