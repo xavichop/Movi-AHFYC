@@ -1,65 +1,73 @@
 process.env.PORT = 3001;
-var routes = require('./routes/index');
-var users = require('./routes/users');
+
 var path = require('path');
 var express = require('express');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
-// New Code
-var mongo = require('mongodb');
-var monk = require('monk');
-var db = monk('localhost:27017/MoviDB');
+//routes
+var routes = require('./routes/index');
+var users = require('./routes/users'); //routes are defined here
+var posts = require('./routes/userPosts'); //routes are defined here
+var categories = require('./routes/categories');
+
+// Mongo Conection
+var dbName = 'MoviDB';
+var connectionString = 'mongodb://localhost:27017/' + dbName;
+mongoose.connect(connectionString);
+
 
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-//var io =require('socket.io').listen(app);
+//configure body-parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/angular', express.static(__dirname + '/node_modules/angular/'));
-app.use('/angular-resource', express.static(__dirname + '/node_modules/angular-resource'));
-app.use('/angular-socket', express.static(__dirname + '/node_modules/angular-socket-io/'));
 app.use('/css', express.static(__dirname + '/css'));
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
 
-// Make our db accessible to our router
-app.use(function (req, res, next) {
-    req.db = db;
-    next();
-});
-
+//Register APIS
 app.use('/', routes);
-app.use('/users', users);
+app.use('/api', users);
+app.use('/api', posts);
+app.use('/api', categories);
 
-
-app.get('/login', function (req, res) {
+//GET HTML PAGES
+app.get('/', function (req, res) {
     return res.sendfile(__dirname + '/public/Views/index.html');
 });
-
-app.set('view engine', 'jade');
-//app.configure('development', function () { app.locals.pretty = true; });
-
-
-app.get('/api/getUsers', function (req, res) {
-    var db = req.db;
-    var collection = db.get('User');
-    collection.find({}, function (e, docs) {
-        res.send(docs);
-    });
+app.get('/retoMovi', function (req, res) {
+    return res.sendfile(__dirname + '/public/Views/Application/userDashboard.html');
 });
-app.get('/api/authenticate/:username/:password', function (req, res) {
-    var db = req.db;
-    var collection = db.get('User');
-    collection.find({username: req.params.username}, function (e, doc) {
-        if (doc && doc.length > 0) {
-            if (doc[0].password && doc[0].password == req.params.password) {
-                res.send({autenticate: true});
-                return;
-            }
-        }
-        res.send({autenticate: false});
-    });
-});
+
+
+// Requires multiparty
+multiparty = require('connect-multiparty'),
+    multipartyMiddleware = multiparty(),
+
+// Requires controller
+    UserController = require('./backControllers/UserController');
+// Example endpoint
+app.post('/api/user/uploads', multipartyMiddleware, UserController.uploadFile);
+
+
+//router.route('/user')
+//    .post(function(req, res) {
+//        //var name= req.body.name;  // set the bears name (comes from the request)
+//
+//        var db = req.db;
+//        var collection = db.get('User');
+//        collection.insert(req.body);
+//
+//    });
+//
+//
+//app.use('/api', router);
+//
+
 /// error handlers
 
 /*
