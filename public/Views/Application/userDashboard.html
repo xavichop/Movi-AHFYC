@@ -64,13 +64,19 @@
         }
 
         .angular-google-map-container {
-            height: 400px;
+            height: 1000px;
+        }
+
+        .marker-labels {
+            background-color: black;
+            color: white;
         }
     </style>
 </head>
 <body data-ng-controller="userDashboardCtrl">
-<div class="col-lg-8 col-lg-offset-2">
+<div class="">
     <div class="container-fluid">
+
 
         <div class="panel panel-primary">
             <div class="panel-heading text-center">
@@ -81,127 +87,60 @@
 
                 </h4>
             </div>
+
             <div class="panel-body">
-                <form name="formUserPost" data-ng-init="frmUserPost.procesado=false"
-                      class="form-horizontal" role="form"
-                      data-ng-submit="createPost(picFile);">
-                    <fieldset data-ng-disabled="false">
-                        <div class="row">
-                            <div class="form-group">
-                                <label class="control-label col-xs-5">Titulo:</label>
+                <div class="row">
+                    <input type="button" class="btn btn-primary" ng-click="gotoCreatePost()" value="Crear Post">
+                </div>
+                <div class="panel panel-default col-lg-5 navbar navbar-default navbar-fixed-top" style="">
+                    <div class="container-fluid">
+                    <div class="panel-body">
+                        <ui-gmap-google-map center="map.center" zoom="map.zoom" draggable="true" options="options"
+                                            bounds="map.bounds">
+                            <ui-gmap-markers models="randomMarkers" coords="'self'" icon="'icon'"
+                                             options="'options'">
+                            </ui-gmap-markers>
+                        </ui-gmap-google-map>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
 
-                                <div class="col-xs-7">
-                                    <input type="text" data-ng-model=frmUserPost.postTitle required>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="form-group">
-                                <label class="control-label col-xs-5">Imagen:</label>
+                    <div class="well well-sm col-lg-7 col-lg-offset-5" style="">
+                        <div class="row" data-ng-repeat="item in userPosts">
+                            <div class="col-sm-12 col-md-10 col-lg-offset-1">
+                                <div class="thumbnail">
+                                    <img src="{{item.picture}}" class="img-rounded img-responsive"
+                                         style="width: auto; height: auto; max-width: 90%;max-height: 100%">
 
-                                <div class="col-xs-7">
-                                    <input type="file" ngf-select ng-model="picFile" name="file" accept="image/*"
-                                           ngf-max-size="2MB" class="" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group text-center">
-                                <img ng-show="myForm.file.$valid" ngf-thumbnail="!picFile.$error && picFile"
-                                     class="thumb img-thumbnail img-responsive">
-                                <input type="button" class="btn btn-default" ng-click="picFile = null" ng-show="picFile"
-                                       value="Quitar Imagen"/>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <label class="control-label col-xs-5">Detalle:</label>
+                                    <div class="caption">
+                                        <h3><span data-ng-bind="item.title"></span></h3>
 
-                                <div class="col-xs-7">
-                                    <textarea data-ng-model="frmUserPost.postDetail"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <label class="control-label col-xs-5">Geo Localizacion:</label>
+                                        <p><span data-ng-bind="item.detail"></span></p>
 
-                                <div class="col-xs-7">
-                                    <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-                                        <ui-gmap-marker coords="marker.coords" options="marker.options"
-                                                        events="marker.events" idkey="marker.id">
-                                        </ui-gmap-marker>
-                                    </ui-gmap-google-map>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <label class="control-label col-xs-5">Categoria:</label>
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-5">Categoria:</label>
 
-                                <div class="col-xs-7">
-                                    <select class="form-control" data-ng-model="frmUserPost.category"
-                                            name="category"
-                                            data-ng-options="item.category for item in categories"></select>
+                                            <div class="col-xs-7">
+                                                <label data-ng-bind="item.category"></label>
+                                            </div>
+                                        </div>
+
+                                        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#"
+                                                                                                           class="btn btn-default"
+                                                                                                           role="button">Button</a>
+                                        </p>
+                                    </div>
 
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="row text-center">
-                            <div class="form-group">
-                                <input type="button" class="btn btn-default" value="Regresar"
-                                       ng-click="Regresar()">
-                                <input type="submit" class="btn btn-primary" value="Crear"
-                                        >
-                            </div>
-                        </div>
-                    </fieldset>
-
-                </form>
-
-                <form name="myForm" class="form-horizontal" role="form">
-                    <fieldset>
-                        <legend>Upload on form submit</legend>
-
-                        <div class="form-group">
-                            <label>Photo:</label>
-                            <input type="file" ngf-select ng-model="picFile" name="file" accept="image/*"
-                                   ngf-max-size="2MB" class="" required>
-                            <i ng-show="myForm.file.$error.maxSize">File too large {{picFile.size /
-                                1000000|number:1}}MB: max {{picFile.$errorParam}}</i>
-                        </div>
-                        <img ng-show="myForm.file.$valid" ngf-thumbnail="!picFile.$error && picFile"
-                             style="width: 100px;height: 100px;float: none;position: relative;top: 7px;">
-                        <input type="button" class="btn btn-default" ng-click="picFile = null" ng-show="picFile"
-                               value="Quitar Imagen"/>
-
-                        <input type="button" class="btn btn-primary" ng-disabled="!myForm.$valid"
-                               ng-click="uploadPic(picFile)" value="Submit"/>
-      <span class="progress" ng-show="picFile.progress >= 0">
-        <div style="width:{{picFile.progress}}%"
-             ng-bind="picFile.progress + '%'"></div>
-      </span>
-                        <span ng-show="picFile.result">Upload Successful</span>
-                        <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-                    </fieldset>
-                    <br>
-                </form>
+                </div>
 
             </div>
-        </div>
-
-
-
-        <div data-ng-repeat="item in userPosts">
-            <img src="{{item.picture}}">
-
-            <ui-gmap-google-map center='map.center' zoom='map.zoom'>
-                <ui-gmap-marker coords="marker.coords" options="marker.options"
-                                events="marker.events" idkey="marker.id">
-                </ui-gmap-marker>
-            </ui-gmap-google-map>
         </div>
 
     </div>

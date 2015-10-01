@@ -42,6 +42,9 @@ app.get('/', function (req, res) {
 app.get('/retoMovi', function (req, res) {
     return res.sendfile(__dirname + '/public/Views/Application/userDashboard.html');
 });
+app.get('/createPost', function (req, res) {
+ return res.sendfile(__dirname + '/public/Views/Application/UserPost/CreatePost.html');
+});
 
 
 // Requires multiparty
