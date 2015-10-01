@@ -44,7 +44,7 @@ app.controller('userDashboardCtrl', ['$scope', 'Upload', '$timeout', '$log', '$r
         });
         res.Invocar({}, function (resOk) {
             if (resOk) {
-                $scope.userPosts = resOk;
+                $scope.userPosts = resOk.reverse();
                 $scope.getPostsLocation();
             }
         });

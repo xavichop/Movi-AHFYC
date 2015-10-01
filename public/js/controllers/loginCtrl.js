@@ -15,7 +15,7 @@ app.controller('loginController', ["$scope", "$timeout", "$resource", "$window",
     //$scope.username = 'xavier';
 
     $scope.Login = function () {
-        var url = "http://localhost:3001/api/authenticate/:username/:password";
+        var url = "/api/authenticate/:username/:password";
         var res = $resource('', {}, {
             Invocar: {
                 url: url,
@@ -48,7 +48,7 @@ app.controller('loginController', ["$scope", "$timeout", "$resource", "$window",
     }
 
     $scope.Registrar=function(){
-        var url = "http://localhost:3001/api/users";
+        var url = "/api/users";
         var res = $resource('', {}, {
             Invocar: {
                 url: url,
